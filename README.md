@@ -138,6 +138,8 @@ You can make a topic, event stream, with EventFlowBuilder. But without builder c
 **EventFlow.subscribe<>()** attach your lambda function to **Coroutine SharedFlow** event stream.(internally calls SharedFlow.collect(your_lambda()))
 And subscribe() function returns **coroutine Job instance**. You can cancel subscription and release resources with Job.cancel().
 
+**Keep in mind** that you have to release resources after use. **Job.cancel()** removes single subscription. **EventFlow.remove(topic)** closes topic and all subscribers.
+
 -----------------------------------------------------------------------------------------------------------------------
 
 ##### Publish an event
@@ -300,8 +302,10 @@ How to use builder to apply options to the topic :
 	}
 
 Add **.withValve()** in builder method chain and call **EventFlow.switchTopicValve()** to switch on and off the stream. (It affects every topic subscriber)
+
 Set buffer size with **.setBufferSize()** method. Default is 64.
-Add back pressure policy with **.withBackpressure()**. You can choice one of three types - EventFlowControl.BpType.SUSPEND, EventFlowControl.BpType.DROP_OLDEST and EventFlowControl.BpType.DROP_LATEST. DROP_OLDEST is default.
+
+Add back pressure policy with **.withBackpressure()**. You can select one of three types - EventFlowControl.BpType.SUSPEND, EventFlowControl.BpType.DROP_OLDEST and EventFlowControl.BpType.DROP_LATEST. DROP_OLDEST is default.
 
 -----------------------------------------------------------------------------------------------------------------------
 
